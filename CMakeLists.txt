@@ -11,7 +11,6 @@ set(DEFAULT_BUILD_TYPE "Release")
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-include(CTest)
 add_executable(gpu_internal_sorting
         main.cu
         funcs.h
@@ -19,7 +18,9 @@ add_executable(gpu_internal_sorting
         common/fmt.hpp
         common/catch.hpp
         common/clara.hpp
-        common/utils.hpp)
+        common/utils.hpp
+        common/uniform_random.h
+        )
 
 target_link_libraries(gpu_internal_sorting ${CUDA_LIBRARIES})
 include_directories(gpu_internal_sorting ${CUDA_INCLUDE_DIRS})

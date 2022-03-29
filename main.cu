@@ -1,26 +1,33 @@
 #include "funcs.h"
 #include "kernels.cuh"
+#include "common/uniform_random.h"
 
 #define PRINT(...) LOG(info, std::string(fmt::format(__VA_ARGS__)))
 
+using namespace std;
+using namespace DS;
 
-int eval(int inputLength = 10000) {
-   timer_start("");
-   auto hostInput1 = generate_input(inputLength);
-   auto hostInput2 = generate_input(inputLength);
-   auto gpuInput1 = hostInput1;
-   auto gpuInput2 = hostInput2;
 
-   const size_t byteCount = inputLength * sizeof(uint32_t);
+template<typename T>
+void permute(vector<T> &a)
+{
+   static UniformRandom r;
 
+   for (std::size_t j = 1; j < a.size(); ++j)
+      swap(a[j], a[r.nextInt(0, j)]);
+}
+
+int main() {
+   int NUM_ITEMS = 10000;
+   auto hostInput = generate_input(NUM_ITEMS);
+
+   timer_start("Insertion Sort");
+
+   // permute(hostInput);
+   auto hostOutput = insertionSort(hostInput);
+   verify(hostOutput, hostInput);
 
    timer_stop();
    return 0;
 }
 
-TEST_CASE("Vec_Add", "[vec_add]") {
-   SECTION("[inputSize:161910]") {
-      eval(161910);
-   }
-
-}
